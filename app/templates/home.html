@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Pot &amp; Plants - Online Plant Nursery{% endblock %}
+{% block content %}
+<section class="hero reveal">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <p class="eyebrow">Online plant nursery</p>
+            <h1>Bring nature <span>home</span>.</h1>
+            <p>Curated indoor and outdoor plants, beautiful pots and gardening essentials delivered to your doorstep.</p>
+            <div class="hero-actions">
+                <a href="{{ url_for('shop.shop_index') }}" class="btn-primary btn-lg">Shop plants</a>
+                <a href="{{ url_for('shop.shop_index', category='indoor-plants') }}" class="btn-outline">Indoor picks</a>
+            </div>
+            <div class="hero-stats">
+                <div><strong>5000+</strong><span>Happy plant parents</span></div>
+                <div><strong>150+</strong><span>Handpicked varieties</span></div>
+                <div><strong>48h</strong><span>Fast delivery</span></div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-photo-main"></div>
+            <div class="hero-photo-secondary"></div>
+            <div class="hero-badge">Fresh • Handpicked • Loved</div>
+        </div>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <h2 class="section-title">Shop by category</h2>
+        <div class="category-grid">
+            {% for cat in categories %}
+                <a class="category-card" href="{{ url_for('shop.shop_index', category=cat.slug) }}">
+                    <h3>{{ cat.name }}</h3>
+                    <p>Explore {{ cat.name|lower }}</p>
+                </a>
+            {% else %}
+                <p>No categories yet. Admin can create them.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section section-alt reveal">
+    <div class="container">
+        <div class="vision-grid">
+            <div class="vision-intro">
+                <p class="eyebrow">Your personal</p>
+                <h2 class="section-title">
+                    Green<br>
+                    Escape, Design<br>
+                    <span>By us</span>
+                </h2>
+                <a href="{{ url_for('auth.register') }}" class="btn-primary btn-lg">Register now</a>
+            </div>
+            <div class="vision-copy">
+                <h3>Vision</h3>
+                <p>
+                    To create green spaces that feel natural and calm, where everyday living quietly
+                    connects with nature, no matter the size of the space.
+                </p>
+                <p>
+                    We specialize in designing beautiful gardens and landscapes that perfectly reflect
+                    your lifestyle and personality. Whether it’s a small apartment balcony, a large
+                    terrace, or an organic vegetable garden, we turn any empty corner into a functional,
+                    refreshing retreat. Our focus is on blending custom style with sustainability that lasts.
+                </p>
+                <p>
+                    Our services go beyond plants. We provide complete end-to-end solutions including
+                    garden planning, flooring, aesthetic elements, lighting, and outdoor furniture,
+                    ensuring every detail works together beautifully. Whether it’s a cozy balcony,
+                    a productive terrace garden, or a lush home landscape, we design spaces that are
+                    easy to maintain and a joy to live in.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <h2 class="section-title">Simple. Sustainable. Custom-made.</h2>
+        <div class="services-grid">
+            <div class="service-group">
+                <h3>Residential retreats</h3>
+                <ul>
+                    <li>Balcony Oasis</li>
+                    <li>Roof-top Garden</li>
+                    <li>Sit-out Garden</li>
+                    <li>House Gardens</li>
+                    <li>Indoor Greenery</li>
+                </ul>
+            </div>
+            <div class="service-group">
+                <h3>Outdoor &amp; beautification</h3>
+                <ul>
+                    <li>Outdoor Landscapes</li>
+                    <li>Garden Beautification</li>
+                    <li>Custom Planters &amp; Décor</li>
+                    <li>Lighting &amp; Flooring Concepts</li>
+                </ul>
+            </div>
+            <div class="service-group">
+                <h3>Commercial spaces</h3>
+                <p>
+                    A well-designed garden can completely change how a commercial space feels.
+                    In offices, cafés, and workspaces, greenery brings freshness, improves comfort,
+                    and creates a space where people feel relaxed and inspired. Plants add warmth,
+                    balance hard architecture, and make everyday spaces more inviting and lively.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-alt reveal">
+    <div class="container">
+        <h2 class="section-title">What makes us different</h2>
+        <p>
+            Your space is a reflection of your brand; its greenery should be no different.
+            We move away from the generic, focusing instead on the quiet rhythm of your
+            environment — its purpose, its light, and its flow.
+        </p>
+        <p>
+            By pairing expert botanical selection with custom-crafted hanging gardens,
+            vertical designs, and bespoke floral installations, we create living art that
+            feels essential to the room. This is design with intention: visually striking,
+            effortlessly durable, and built to grow alongside your home or business.
+        </p>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <h2 class="section-title">What our plant parents say</h2>
+        <div class="testimonial-grid">
+            <article class="testimonial-card">
+                <p>"The plants arrived lush and healthy. The pots are gorgeous too!"</p>
+                <span>- Aditi, Bengaluru</span>
+            </article>
+            <article class="testimonial-card">
+                <p>"Love the care guides. Even as a beginner I feel confident."</p>
+                <span>- Karan, Mumbai</span>
+            </article>
+            <article class="testimonial-card">
+                <p>"Fast delivery and eco-friendly packaging. Highly recommend."</p>
+                <span>- Riya, Delhi</span>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

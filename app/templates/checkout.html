@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Checkout - Pot &amp; Plants{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container checkout-grid">
+        <div>
+            <h1>Checkout</h1>
+            <form method="post" class="form-card">
+                {{ form.hidden_tag() }}
+                <div class="form-row">
+                    {{ form.address_line1.label }}{{ form.address_line1(class="input") }}
+                    {% for error in form.address_line1.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-row">
+                    {{ form.address_line2.label }}{{ form.address_line2(class="input") }}
+                </div>
+                <div class="form-row form-row-inline">
+                    <div>
+                        {{ form.city.label }}{{ form.city(class="input") }}
+                        {% for error in form.city.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        {{ form.state.label }}{{ form.state(class="input") }}
+                        {% for error in form.state.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-row form-row-inline">
+                    <div>
+                        {{ form.postal_code.label }}{{ form.postal_code(class="input") }}
+                        {% for error in form.postal_code.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        {{ form.country.label }}{{ form.country(class="input") }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    {{ form.payment_method.label }}{{ form.payment_method(class="input") }}
+                    {% for error in form.payment_method.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn-primary">Place order</button>
+            </form>
+        </div>
+        <aside class="checkout-info">
+            <h2>Payment options</h2>
+            <ul>
+                <li><strong>UPI</strong>: pay via your favorite UPI app.</li>
+                <li><strong>Card</strong>: all major debit/credit cards accepted.</li>
+                <li><strong>Cash on delivery</strong>: pay when the plants arrive.</li>
+            </ul>
+        </aside>
+    </div>
+</section>
+{% endblock %}
+

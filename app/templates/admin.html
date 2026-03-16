@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Admin - Pot &amp; Plants{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1>Admin dashboard</h1>
+        <div class="admin-grid">
+            <div>
+                <div class="admin-header">
+                    <h2>Products</h2>
+                    <a href="{{ url_for('admin.create_product') }}" class="btn-primary">Add product</a>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>₹{{ '%.2f'|format(product.price) }}</td>
+                            <td>{{ product.category.name if product.category else "-" }}</td>
+                            <td class="admin-actions">
+                                <a href="{{ url_for('admin.edit_product', product_id=product.id) }}" class="btn-inline">Edit</a>
+                                <form method="post" action="{{ url_for('admin.delete_product', product_id=product.id) }}">
+                                    {{ csrf_token() }}
+                                    <button type="submit" class="btn-link">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <aside>
+                <h2>Recent orders</h2>
+                <ul class="order-list">
+                    {% for order in orders %}
+                        <li>
+                            <div>
+                                <strong>#{{ order.id }}</strong> - ₹{{ '%.2f'|format(order.total_amount) }}
+                            </div>
+                            <div>{{ order.created_at.strftime('%d %b %Y') }} - {{ order.status }}</div>
+                        </li>
+                    {% else %}
+                        <li>No orders yet.</li>
+                    {% endfor %}
+                </ul>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

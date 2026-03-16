@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Shop - Pot &amp; Plants{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="shop-header">
+            <h1>Shop plants &amp; more</h1>
+            <form method="get" class="shop-filters">
+                <input type="text" name="q" placeholder="Search plants..." value="{{ search or '' }}">
+                <select name="category">
+                    <option value="">All categories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.slug }}" {% if current_category == cat.slug %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn-primary">Filter</button>
+            </form>
+        </div>
+        <div class="product-grid">
+            {% for product in products %}
+                {% include "_product_card.html" %}
+            {% else %}
+                <p>No products found.</p>
+            {% endfor %}
+        </div>
+        {% if pagination.pages > 1 %}
+            <div class="pagination">
+                {% if pagination.has_prev %}
+                    <a href="{{ url_for('shop.shop_index', page=pagination.prev_num, category=current_category, q=search) }}">&laquo; Prev</a>
+                {% endif %}
+                <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+                {% if pagination.has_next %}
+                    <a href="{{ url_for('shop.shop_index', page=pagination.next_num, category=current_category, q=search) }}">Next &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+

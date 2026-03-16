@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - Admin - Pot &amp; Plants{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <form method="post" class="form-card">
+            {{ form.hidden_tag() }}
+            <div class="form-row">
+                {{ form.name.label }}{{ form.name(class="input") }}
+                {% for error in form.name.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                {{ form.price.label }}{{ form.price(class="input") }}
+                {% for error in form.price.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                {{ form.category.label }}{{ form.category(class="input") }}
+            </div>
+            <div class="form-row">
+                {{ form.description.label }}{{ form.description(class="input") }}
+                {% for error in form.description.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                {{ form.care_instructions.label }}{{ form.care_instructions(class="input") }}
+            </div>
+            <div class="form-row form-row-inline">
+                <label>{{ form.is_featured() }} Featured</label>
+                <label>{{ form.is_best_seller() }} Best seller</label>
+            </div>
+            <button type="submit" class="btn-primary">Save</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
+

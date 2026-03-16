@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Register - Pot &amp; Plants{% endblock %}
+{% block content %}
+<section class="section auth-section">
+    <div class="container auth-card">
+        <h1>Create account</h1>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-row">
+                {{ form.name.label }}{{ form.name(class="input") }}
+                {% for error in form.name.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                {{ form.email.label }}{{ form.email(class="input") }}
+                {% for error in form.email.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                {{ form.password.label }}{{ form.password(class="input") }}
+                {% for error in form.password.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                {{ form.confirm_password.label }}{{ form.confirm_password(class="input") }}
+                {% for error in form.confirm_password.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn-primary">Create account</button>
+        </form>
+        <p class="auth-alt">Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+    </div>
+</section>
+{% endblock %}
+

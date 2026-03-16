@@ -1,0 +1,26 @@
+<article class="product-card product-card--hover">
+    <a class="product-card-link" href="{{ url_for('shop.product_detail', product_id=product.id) }}">
+        <div class="product-image" aria-hidden="true">
+            {% if product.image_filename %}
+                <img src="{{ url_for('static', filename='images/' ~ product.image_filename) }}"
+                     alt="{{ product.name }}">
+            {% else %}
+                <div class="image-placeholder">{{ product.name[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="price">₹{{ '%.2f'|format(product.price) }}</p>
+        </div>
+
+        <div class="product-hover">
+            <div class="product-hover-inner">
+                <p class="product-hover-title">{{ product.name }}</p>
+                <p class="product-hover-price">₹{{ '%.2f'|format(product.price) }}</p>
+                <span class="product-hover-cta">View details</span>
+            </div>
+        </div>
+    </a>
+</article>
+
