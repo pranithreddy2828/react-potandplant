@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
+from flask_wtf.csrf import CSRFProtect
 from pathlib import Path
 import os
 import tempfile
@@ -26,7 +27,7 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 login_manager = LoginManager()
 migrate = Migrate()
-csrf = None
+csrf = CSRFProtect()
 bcrypt = Bcrypt()
 
 
@@ -53,9 +54,7 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
-    # CSRFProtect is optional and causes issues with older Flask-WTF/Flask
-    # If you want CSRF, install compatible versions and enable here:
-    # csrf.init_app(app)
+    csrf.init_app(app)
     bcrypt.init_app(app)
 
     # Ensure tables exist (simple auto-create for dev) and seed demo data
