@@ -1,153 +1,330 @@
 {% extends "base.html" %}
-{% block title %}Pot &amp; Plants - Online Plant Nursery{% endblock %}
+{% block title %}Pot &amp; Plants - Garden &amp; Landscape Design{% endblock %}
 {% block content %}
-<section class="hero reveal">
-    <div class="container hero-grid">
-        <div class="hero-copy">
-            <p class="eyebrow">Online plant nursery</p>
-            <h1>Bring nature <span>home</span>.</h1>
-            <p>Curated indoor and outdoor plants, beautiful pots and gardening essentials delivered to your doorstep.</p>
+<div class="home-page">
+<div class="lotus-sprinkles lotus-sprinkles--page" aria-hidden="true" data-lotus-sprinkles></div>
+
+<section class="hero hero-landscape reveal" id="top">
+    <div class="hero-bg" role="img" aria-label="Beautiful garden landscape background"></div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-landscape-inner">
+        <div class="hero-landscape-copy">
+            <h1>Transform Your Space into a Living Garden</h1>
+            <div class="hero-frosted">
+                <p class="hero-subheading">
+                    Custom Landscaping • Yoga Decks • Pergolas • Fire Pits • Water Features • Pathways • Plant Styling
+                </p>
+                <p class="hero-description">
+                    Create a space that feels calm, beautiful, and truly yours. We design and build gardens that are not just visually appealing but also functional and meaningful.
+                </p>
+            </div>
             <div class="hero-actions">
-                <a href="{{ url_for('shop.shop_index') }}" class="btn-primary btn-lg">Shop plants</a>
-                <a href="{{ url_for('shop.shop_index', category='indoor-plants') }}" class="btn-outline">Indoor picks</a>
-            </div>
-            <div class="hero-stats">
-                <div><strong>5000+</strong><span>Happy plant parents</span></div>
-                <div><strong>150+</strong><span>Handpicked varieties</span></div>
-                <div><strong>48h</strong><span>Fast delivery</span></div>
+                <a href="#consultation" class="btn-primary btn-lg">Get Free Consultation</a>
+                <a href="https://wa.me/919876543210" class="btn-outline btn-lg" target="_blank" rel="noopener">Call / WhatsApp</a>
             </div>
         </div>
-        <div class="hero-visual">
-            <div class="hero-photo-main"></div>
-            <div class="hero-photo-secondary"></div>
-            <div class="hero-badge">Fresh • Handpicked • Loved</div>
-        </div>
-    </div>
-</section>
-
-<section class="section reveal">
-    <div class="container">
-        <h2 class="section-title">Shop by category</h2>
-        <div class="category-grid">
-            {% for cat in categories %}
-                <a class="category-card" href="{{ url_for('shop.shop_index', category=cat.slug) }}">
-                    <h3>{{ cat.name }}</h3>
-                    <p>Explore {{ cat.name|lower }}</p>
-                </a>
-            {% else %}
-                <p>No categories yet. Admin can create them.</p>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<section class="section section-alt reveal">
-    <div class="container">
-        <div class="vision-grid">
-            <div class="vision-intro">
-                <p class="eyebrow">Your personal</p>
-                <h2 class="section-title">
-                    Green<br>
-                    Escape, Design<br>
-                    <span>By us</span>
-                </h2>
-                <a href="{{ url_for('auth.register') }}" class="btn-primary btn-lg">Register now</a>
-            </div>
-            <div class="vision-copy">
-                <h3>Vision</h3>
-                <p>
-                    To create green spaces that feel natural and calm, where everyday living quietly
-                    connects with nature, no matter the size of the space.
-                </p>
-                <p>
-                    We specialize in designing beautiful gardens and landscapes that perfectly reflect
-                    your lifestyle and personality. Whether it’s a small apartment balcony, a large
-                    terrace, or an organic vegetable garden, we turn any empty corner into a functional,
-                    refreshing retreat. Our focus is on blending custom style with sustainability that lasts.
-                </p>
-                <p>
-                    Our services go beyond plants. We provide complete end-to-end solutions including
-                    garden planning, flooring, aesthetic elements, lighting, and outdoor furniture,
-                    ensuring every detail works together beautifully. Whether it’s a cozy balcony,
-                    a productive terrace garden, or a lush home landscape, we design spaces that are
-                    easy to maintain and a joy to live in.
-                </p>
+        <div class="hero-landscape-card">
+            <div class="hero-mini-grid">
+                <div class="hero-mini">
+                    <div class="hero-mini-title">Designed for your space</div>
+                    <div class="hero-mini-text">Villa • Backyard • Balcony • Terrace</div>
+                </div>
+                <div class="hero-mini">
+                    <div class="hero-mini-title">End-to-end execution</div>
+                    <div class="hero-mini-text">Plan • Materials • Build • Styling</div>
+                </div>
+                <div class="hero-mini">
+                    <div class="hero-mini-title">Nature-first palette</div>
+                    <div class="hero-mini-text">Greens • Beige • Clean whites</div>
+                </div>
+                <div class="hero-mini">
+                    <div class="hero-mini-title">Budget-friendly</div>
+                    <div class="hero-mini-text">Smart choices, lasting quality</div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="section reveal">
-    <div class="container">
-        <h2 class="section-title">Simple. Sustainable. Custom-made.</h2>
-        <div class="services-grid">
-            <div class="service-group">
-                <h3>Residential retreats</h3>
-                <ul>
-                    <li>Balcony Oasis</li>
-                    <li>Roof-top Garden</li>
-                    <li>Sit-out Garden</li>
-                    <li>House Gardens</li>
-                    <li>Indoor Greenery</li>
-                </ul>
-            </div>
-            <div class="service-group">
-                <h3>Outdoor &amp; beautification</h3>
-                <ul>
-                    <li>Outdoor Landscapes</li>
-                    <li>Garden Beautification</li>
-                    <li>Custom Planters &amp; Décor</li>
-                    <li>Lighting &amp; Flooring Concepts</li>
-                </ul>
-            </div>
-            <div class="service-group">
-                <h3>Commercial spaces</h3>
-                <p>
-                    A well-designed garden can completely change how a commercial space feels.
-                    In offices, cafés, and workspaces, greenery brings freshness, improves comfort,
-                    and creates a space where people feel relaxed and inspired. Plants add warmth,
-                    balance hard architecture, and make everyday spaces more inviting and lively.
-                </p>
-            </div>
+<section class="section reveal" id="about">
+    <div class="container split-grid">
+        <div class="split-copy">
+            <h2 class="section-title">About Pot &amp; Plants</h2>
+            <p class="section-lead">
+                At Pot &amp; Plants, we don’t just design gardens — we create experiences.
+            </p>
+            <p>
+                From serene yoga decks and cozy fire pit corners to natural stone pathways, soothing water features, and beautifully crafted pergolas, we transform empty spaces into vibrant environments that bring calm, beauty, and functionality to your home.
+            </p>
+            <p>
+                Whether it's a villa garden, backyard, balcony, terrace, or a compact outdoor space, every design is thoughtfully crafted with purpose and attention to detail.
+            </p>
+        </div>
+        <div class="split-visual">
+            <img
+                class="rounded-image"
+                src="https://images.pexels.com/photos/4505161/pexels-photo-4505161.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                alt="A designed garden with lush greenery and seating"
+                loading="lazy"
+            >
         </div>
     </div>
 </section>
 
-<section class="section section-alt reveal">
+<section class="section section-alt reveal" id="services">
     <div class="container">
-        <h2 class="section-title">What makes us different</h2>
-        <p>
-            Your space is a reflection of your brand; its greenery should be no different.
-            We move away from the generic, focusing instead on the quiet rhythm of your
-            environment — its purpose, its light, and its flow.
-        </p>
-        <p>
-            By pairing expert botanical selection with custom-crafted hanging gardens,
-            vertical designs, and bespoke floral installations, we create living art that
-            feels essential to the room. This is design with intention: visually striking,
-            effortlessly durable, and built to grow alongside your home or business.
-        </p>
-    </div>
-</section>
-
-<section class="section reveal">
-    <div class="container">
-        <h2 class="section-title">What our plant parents say</h2>
-        <div class="testimonial-grid">
-            <article class="testimonial-card">
-                <p>"The plants arrived lush and healthy. The pots are gorgeous too!"</p>
-                <span>- Aditi, Bengaluru</span>
+        <div class="section-header">
+            <h2 class="section-title">Services</h2>
+            <p class="section-subtitle">Build a garden that looks beautiful and lives beautifully.</p>
+        </div>
+        <div class="cards-grid">
+            <article
+                class="icon-card icon-card--bg service-pergola service-card"
+                role="button"
+                tabindex="0"
+                data-service-title="Pergola"
+                data-service-description="A pergola creates a shaded seating area while adding architectural beauty to the garden."
+                data-service-image="{{ url_for('static', filename='images/pergola.png') }}"
+                data-service-images="{{ url_for('static', filename='images/pergola.png') }},https://picsum.photos/seed/potandplants-pergola-2/1400/900,https://picsum.photos/seed/potandplants-pergola-3/1400/900"
+            >
+                <div class="icon-badge" aria-hidden="true">⛱</div>
+                <h3>Pergola</h3>
+                <p>A pergola creates a shaded seating area while adding architectural beauty to the garden.</p>
             </article>
-            <article class="testimonial-card">
-                <p>"Love the care guides. Even as a beginner I feel confident."</p>
-                <span>- Karan, Mumbai</span>
+            <article
+                class="icon-card icon-card--bg service-yoga service-card"
+                role="button"
+                tabindex="0"
+                data-service-title="Yoga Deck"
+                data-service-description="A peaceful space for relaxation, yoga, or outdoor seating using wood or HPL decking."
+                data-service-image="https://picsum.photos/seed/potandplants-yoga/1400/900"
+            >
+                <div class="icon-badge" aria-hidden="true">🧘</div>
+                <h3>Yoga Deck</h3>
+                <p>A peaceful space for relaxation, yoga, or outdoor seating using wood or HPL decking.</p>
             </article>
-            <article class="testimonial-card">
-                <p>"Fast delivery and eco-friendly packaging. Highly recommend."</p>
-                <span>- Riya, Delhi</span>
+            <article
+                class="icon-card icon-card--bg service-firepit service-card"
+                role="button"
+                tabindex="0"
+                data-service-title="Fire Pit Seating Area"
+                data-service-description="A warm and inviting space perfect for evening relaxation and social gatherings."
+                data-service-image="https://picsum.photos/seed/potandplants-firepit/1400/900"
+            >
+                <div class="icon-badge" aria-hidden="true">🔥</div>
+                <h3>Fire Pit Seating Area</h3>
+                <p>A warm and inviting space perfect for evening relaxation and social gatherings.</p>
+            </article>
+            <article
+                class="icon-card icon-card--bg service-pathways service-card"
+                role="button"
+                tabindex="0"
+                data-service-title="Pathways"
+                data-service-description="Stone, tile, and pebble pathways that guide movement through the garden."
+                data-service-image="https://picsum.photos/seed/potandplants-pathways/1400/900"
+            >
+                <div class="icon-badge" aria-hidden="true">🪨</div>
+                <h3>Pathways</h3>
+                <p>Stone, tile, and pebble pathways that guide movement through the garden.</p>
+            </article>
+            <article
+                class="icon-card icon-card--bg service-water service-card"
+                role="button"
+                tabindex="0"
+                data-service-title="Water Features"
+                data-service-description="Fountains or mini ponds that add calming sound and natural cooling."
+                data-service-image="https://picsum.photos/seed/potandplants-water/1400/900"
+            >
+                <div class="icon-badge" aria-hidden="true">💧</div>
+                <h3>Water Features</h3>
+                <p>Fountains or mini ponds that add calming sound and natural cooling.</p>
+            </article>
+            <article
+                class="icon-card icon-card--bg service-plants service-card"
+                role="button"
+                tabindex="0"
+                data-service-title="Plants &amp; Layered Landscaping"
+                data-service-description="Thoughtfully selected plants and trees that bring life, color, and structure to the space."
+                data-service-image="https://picsum.photos/seed/potandplants-plants/1400/900"
+            >
+                <div class="icon-badge" aria-hidden="true">🌿</div>
+                <h3>Plants &amp; Layered Landscaping</h3>
+                <p>Thoughtfully selected plants and trees that bring life, color, and structure to the space.</p>
             </article>
         </div>
     </div>
 </section>
+
+<div class="modal" id="service-modal" aria-hidden="true">
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="service-modal-title">
+        <button class="modal-close" type="button" aria-label="Close" data-modal-close>×</button>
+        <div class="modal-grid">
+            <div class="modal-media">
+                <img id="service-modal-image" src="" alt="">
+                <button class="modal-nav modal-nav--prev" type="button" aria-label="Previous photo" data-modal-prev>‹</button>
+                <button class="modal-nav modal-nav--next" type="button" aria-label="Next photo" data-modal-next>›</button>
+                <div class="modal-thumbs" id="service-modal-thumbs" aria-label="Service image gallery"></div>
+            </div>
+            <div class="modal-content">
+                <h3 id="service-modal-title"></h3>
+                <p id="service-modal-description"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="section reveal" id="why-choose-us">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose Us</h2>
+        </div>
+        <div class="why-grid">
+            <div class="why-item">
+                <div class="why-icon" aria-hidden="true">🧩</div>
+                <div>
+                    <h3>Custom-designed gardens tailored to your space</h3>
+                    <p>Every layout is planned around your light, flow, and lifestyle.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon" aria-hidden="true">📐</div>
+                <div>
+                    <h3>Smart and efficient space utilization</h3>
+                    <p>We make compact spaces feel larger and more functional.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon" aria-hidden="true">💚</div>
+                <div>
+                    <h3>Budget-friendly solutions without compromising quality</h3>
+                    <p>We balance materials, durability, and aesthetics.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon" aria-hidden="true">🛠</div>
+                <div>
+                    <h3>End-to-end service from design to execution</h3>
+                    <p>One team from concept to final styling.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon" aria-hidden="true">✨</div>
+                <div>
+                    <h3>Focus on both aesthetics and functionality</h3>
+                    <p>Beautiful spaces that are easy to use and maintain.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-alt reveal" id="projects">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Projects / What We Specialize In</h2>
+            <p class="section-subtitle">A few of our most-loved transformations.</p>
+        </div>
+        <div class="project-grid project-grid--scroll" id="projects-scroll" aria-label="Project showcase (auto-scrolling)">
+            <article class="project-card">
+                <div class="project-image project-img-1" role="img" aria-label="Backyard garden transformation"></div>
+                <div class="project-body">
+                    <h3>Backyard garden transformations</h3>
+                    <p>Full makeovers with seating, greens, pathways, and lighting.</p>
+                </div>
+            </article>
+            <article class="project-card">
+                <div class="project-image project-img-2" role="img" aria-label="Villa landscape design"></div>
+                <div class="project-body">
+                    <h3>Villa landscape designs</h3>
+                    <p>Premium layouts that complement architecture and scale.</p>
+                </div>
+            </article>
+            <article class="project-card">
+                <div class="project-image project-img-3" role="img" aria-label="Compact space optimization"></div>
+                <div class="project-body">
+                    <h3>Compact space optimization</h3>
+                    <p>Smart zoning for small outdoor areas without clutter.</p>
+                </div>
+            </article>
+            <article class="project-card">
+                <div class="project-image project-img-4" role="img" aria-label="Balcony garden setup"></div>
+                <div class="project-body">
+                    <h3>Balcony garden setups</h3>
+                    <p>Planters, vertical greens, and cozy corners for daily calm.</p>
+                </div>
+            </article>
+            <article class="project-card">
+                <div class="project-image project-img-5" role="img" aria-label="Terrace garden"></div>
+                <div class="project-body">
+                    <h3>Terrace gardens</h3>
+                    <p>Layered planting, deck zones, and low-maintenance styling.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section reveal" id="process">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Our Process</h2>
+        </div>
+        <ol class="timeline">
+            <li class="timeline-step">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-card">
+                    <h3>Consultation</h3>
+                    <p>We understand your space, needs, style, and budget.</p>
+                </div>
+            </li>
+            <li class="timeline-step">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-card">
+                    <h3>Design Planning</h3>
+                    <p>Layouts, zoning, and plant + feature planning.</p>
+                </div>
+            </li>
+            <li class="timeline-step">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-card">
+                    <h3>Material Selection</h3>
+                    <p>Decking, stones, features, planters, and lighting choices.</p>
+                </div>
+            </li>
+            <li class="timeline-step">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-card">
+                    <h3>Execution</h3>
+                    <p>On-site build with clean timelines and quality checks.</p>
+                </div>
+            </li>
+            <li class="timeline-step">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-card">
+                    <h3>Final Styling</h3>
+                    <p>Plant placement, finishing touches, and a ready-to-live space.</p>
+                </div>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<section class="section cta-section reveal" id="consultation">
+    <div class="container">
+        <div class="cta-card">
+            <div class="cta-copy">
+                <h2>Ready to Transform Your Space?</h2>
+                <p>Let us design a beautiful garden that brings peace and life to your home.</p>
+                <div class="hero-actions">
+                    <a href="#top" class="btn-primary btn-lg">Get Free Consultation</a>
+                    <a href="https://wa.me/919876543210" class="btn-outline btn-lg" target="_blank" rel="noopener">Contact Us</a>
+                </div>
+            </div>
+            <div class="cta-visual" role="img" aria-label="Garden seating with greenery"></div>
+        </div>
+    </div>
+</section>
+</div>
 {% endblock %}
 
