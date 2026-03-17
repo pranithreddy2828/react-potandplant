@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
@@ -6,6 +6,9 @@ from flask_wtf.csrf import CSRFProtect
 from pathlib import Path
 import os
 import tempfile
+import logging
+import traceback
+from werkzeug.exceptions import HTTPException
 
 # Compatibility shim for Flask-Login with Werkzeug 3+
 try:
@@ -34,6 +37,9 @@ bcrypt = Bcrypt()
 def create_app():
     app = Flask(__name__)
 
+    # Log to stdout (captured by Vercel Function logs)
+    logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+
     # Basic config
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
     base_dir = Path(__file__).resolve().parent.parent
@@ -57,30 +63,49 @@ def create_app():
     csrf.init_app(app)
     bcrypt.init_app(app)
 
-    # Ensure tables exist (simple auto-create for dev) and seed demo data
-    from . import models  # noqa: F401
-    from .models import Category, Product
-    with app.app_context():
-        db.create_all()
+    @app.get("/health")
+    def health():
+        return jsonify(
+            ok=True,
+            vercel=os.environ.get("VERCEL"),
+            db=app.config.get("SQLALCHEMY_DATABASE_URI"),
+        )
+
+    @app.errorhandler(Exception)
+    def handle_unexpected_error(err):
+        # Let Flask handle HTTPExceptions (404, 403, etc.)
+        if isinstance(err, HTTPException):
+            return err
+        app.logger.error("Unhandled exception on %s %s", request.method, request.path)
+        app.logger.error("%s", traceback.format_exc())
+        return jsonify(error="Internal Server Error"), 500
+
+    # Ensure tables exist (simple auto-create for dev) and seed demo data.
+    # On serverless platforms, DB creation/writes can fail; don't crash the function on import.
+    try:
+        from . import models  # noqa: F401
+        from .models import Category, Product
+        with app.app_context():
+            db.create_all()
 
         # Seed basic categories if none exist
-        if not Category.query.first():
-            demo_categories = [
-                Category(name="Indoor Plants", slug="indoor-plants"),
-                Category(name="Outdoor Plants", slug="outdoor-plants"),
-                Category(name="Pots", slug="pots"),
-                Category(name="Gardening Tools", slug="gardening-tools"),
-            ]
-            db.session.add_all(demo_categories)
-            db.session.commit()
+            if not Category.query.first():
+                demo_categories = [
+                    Category(name="Indoor Plants", slug="indoor-plants"),
+                    Category(name="Outdoor Plants", slug="outdoor-plants"),
+                    Category(name="Pots", slug="pots"),
+                    Category(name="Gardening Tools", slug="gardening-tools"),
+                ]
+                db.session.add_all(demo_categories)
+                db.session.commit()
 
         # Seed Indian nursery-style demo products if shop has fewer than 20 items
-        if Product.query.count() < 20:
-            indoor = Category.query.filter_by(slug="indoor-plants").first()
-            outdoor = Category.query.filter_by(slug="outdoor-plants").first()
-            pots = Category.query.filter_by(slug="pots").first()
+            if Product.query.count() < 20:
+                indoor = Category.query.filter_by(slug="indoor-plants").first()
+                outdoor = Category.query.filter_by(slug="outdoor-plants").first()
+                pots = Category.query.filter_by(slug="pots").first()
 
-            demo_products = [
+                demo_products = [
                 dict(
                     name="Fiddle Leaf Fig",
                     price=1299.0,
@@ -321,11 +346,14 @@ def create_app():
                     is_best_seller=False,
                     category_id=indoor.id if indoor else None,
                 ),
-            ]
-            for data in demo_products:
-                if not Product.query.filter_by(name=data["name"]).first():
-                    db.session.add(Product(**data))
-            db.session.commit()
+                ]
+                for data in demo_products:
+                    if not Product.query.filter_by(name=data["name"]).first():
+                        db.session.add(Product(**data))
+                db.session.commit()
+    except Exception:
+        app.logger.error("DB init/seed failed; continuing without seed data.")
+        app.logger.error("%s", traceback.format_exc())
 
     login_manager.login_view = "auth.login"
     login_manager.login_message_category = "info"
