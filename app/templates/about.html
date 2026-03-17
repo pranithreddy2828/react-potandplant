@@ -131,7 +131,8 @@
       const progressed = start - rect.top;
       const raw = progressed / Math.max(1, total);
       const speed = 4.5;
-      const grow = Math.max(0, Math.min(1, raw * speed));
+      const minGrow = 0.12;
+      const grow = Math.max(minGrow, Math.min(1, raw * speed));
 
       container.style.setProperty("--grow", grow.toFixed(4));
       document.documentElement.style.setProperty("--about-grow", grow.toFixed(4));

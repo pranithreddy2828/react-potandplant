@@ -1495,7 +1495,7 @@ label {
 
 /* About: background pot + plant that grows on scroll */
 .about-grow {
-    --grow: 0;
+    --grow: 0.12;
 }
 
 .about-bg-art {
@@ -1513,8 +1513,8 @@ label {
 }
 
 .about-bg-art {
-    position: fixed;
-    bottom: -300px;
+    position: absolute;
+    bottom: -210px;
     right: clamp(12px, calc((100vw - 1280px) / 2 + 12px), 44px);
     width: 260px;
     height: 520px;
