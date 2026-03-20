@@ -1,11 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const flashContainer = document.querySelector(".flash-container");
-  if (flashContainer) {
-    setTimeout(() => {
-      flashContainer.style.opacity = "0";
-      flashContainer.style.transform = "translateY(-4px)";
-    }, 3200);
-  }
+
 
   // Mobile nav toggle
   const navToggle = document.querySelector(".nav-toggle");
@@ -369,5 +363,86 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-});
 
+  // Add to cart AJAX
+  document.querySelectorAll('form.ajax-cart-form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      
+      try {
+        btn.textContent = 'Adding...';
+        btn.disabled = true;
+        
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            showToast(data.message, 'success');
+            
+            // Update cart badges
+            document.querySelectorAll('.cart-badge').forEach(badge => {
+              badge.textContent = data.cart_count;
+              badge.style.display = data.cart_count > 0 ? 'inline-block' : 'none';
+              
+              // Trigger vibrate animation
+              badge.classList.remove('vibrate');
+              void badge.offsetWidth; // trigger reflow to restart animation
+              badge.classList.add('vibrate');
+            });
+          }
+        } else {
+          showToast('Failed to add to cart.', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to server.', 'error');
+      } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+  });
+
+  // Global Toast function
+  window.showToast = function(message, category) {
+    let container = document.querySelector(".flash-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "flash-container";
+      document.body.appendChild(container);
+    }
+    
+    // Ensure container is visible
+    container.style.opacity = "1";
+    container.style.transform = "none";
+    
+    const flash = document.createElement("div");
+    flash.className = `flash flash-${category}`;
+    flash.textContent = message;
+    container.appendChild(flash);
+    
+    scheduleToastFading(flash);
+  };
+
+  // Bind existing flashes for fade out
+  document.querySelectorAll(".flash").forEach(flash => {
+    scheduleToastFading(flash);
+  });
+
+  function scheduleToastFading(flash) {
+    setTimeout(() => {
+      flash.style.opacity = "0";
+      flash.style.transform = "translateX(20px)";
+      setTimeout(() => flash.remove(), 400);
+    }, 3200);
+  }
+});

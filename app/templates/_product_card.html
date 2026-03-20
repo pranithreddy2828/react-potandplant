@@ -1,26 +1,36 @@
 <article class="product-card product-card--hover">
-    <a class="product-card-link" href="{{ url_for('shop.product_detail', product_id=product.id) }}">
-        <div class="product-image" aria-hidden="true">
+    <div class="product-image" aria-hidden="true">
+        <a href="{{ url_for('shop.product_detail', product_id=product.id) }}" style="display: block; width: 100%; height: 100%;">
             {% if product.image_filename %}
                 <img src="{{ url_for('static', filename='images/' ~ product.image_filename) }}"
                      alt="{{ product.name }}">
             {% else %}
-                <div class="image-placeholder">{{ product.name[0] }}</div>
+                <div class="image-placeholder" style="width: 100%; height: 100%;">{{ product.name[0] }}</div>
             {% endif %}
-        </div>
+        </a>
+    </div>
 
-        <div class="product-info">
+    <div class="product-info">
+        <a href="{{ url_for('shop.product_detail', product_id=product.id) }}">
             <h3>{{ product.name }}</h3>
-            <p class="price">₹{{ '%.2f'|format(product.price) }}</p>
-        </div>
+        </a>
+        <p class="price">₹{{ '%.2f'|format(product.price) }}</p>
+    </div>
 
-        <div class="product-hover">
-            <div class="product-hover-inner">
-                <p class="product-hover-title">{{ product.name }}</p>
-                <p class="product-hover-price">₹{{ '%.2f'|format(product.price) }}</p>
-                <span class="product-hover-cta">View details</span>
-            </div>
+    <div class="product-hover">
+        <div class="product-hover-inner">
+            <p class="product-hover-title">{{ product.name }}</p>
+            <p class="product-hover-price">₹{{ '%.2f'|format(product.price) }}</p>
+            
+            <form method="post" action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" class="ajax-cart-form" style="margin-bottom: 0.5rem;">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; font-size: 0.85rem; padding: 0.5rem;">Add to Cart</button>
+            </form>
+            
+            <a href="{{ url_for('shop.product_detail', product_id=product.id) }}" class="btn-outline product-hover-btn-outline" style="width: 100%; justify-content: center; font-size: 0.85rem; padding: 0.5rem; color: white; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.1);">
+                View details
+            </a>
         </div>
-    </a>
+    </div>
 </article>
 

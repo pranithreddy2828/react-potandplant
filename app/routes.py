@@ -124,6 +124,14 @@ def add_to_cart(product_id):
     cart = _get_cart()
     cart[str(product.id)] = cart.get(str(product.id), 0) + max(quantity, 1)
     _save_cart(cart)
+    
+    if request.headers.get("Accept") == "application/json":
+        return {
+            "success": True, 
+            "message": f"Added {product.name} to cart.",
+            "cart_count": sum(cart.values())
+        }
+        
     flash(f"Added {product.name} to cart.", "success")
     return redirect(request.referrer or url_for("shop.shop_index"))
 
@@ -147,6 +155,13 @@ def remove_from_cart(product_id):
     cart.pop(str(product_id), None)
     _save_cart(cart)
     flash("Item removed from cart.", "info")
+    return redirect(url_for("cart.view_cart"))
+
+
+@cart_bp.route("/clear", methods=["POST"])
+def clear_cart():
+    _save_cart({})
+    flash("Cart has been cleared.", "info")
     return redirect(url_for("cart.view_cart"))
 
 

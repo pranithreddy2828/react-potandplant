@@ -12,17 +12,24 @@
                 <div>
                     {% for item in items %}
                         <div class="cart-item">
+                            <div class="cart-item-image">
+                                {% if item.product.image_filename %}
+                                    <img src="{{ url_for('static', filename='uploads/' + item.product.image_filename) }}" alt="{{ item.product.name }}">
+                                {% else %}
+                                    <div class="image-placeholder">
+                                        {{ item.product.name[0] | upper }}
+                                    </div>
+                                {% endif %}
+                            </div>
                             <div>
                                 <h3>{{ item.product.name }}</h3>
                                 <p>₹{{ '%.2f'|format(item.product.price) }} each</p>
                             </div>
                             <form method="post" action="{{ url_for('cart.update_cart_item', product_id=item.product.id) }}" class="cart-quantity-form">
-                                {{ csrf_token() }}
                                 <input type="number" name="quantity" min="0" value="{{ item.quantity }}">
                                 <button type="submit" class="btn-inline">Update</button>
                             </form>
                             <form method="post" action="{{ url_for('cart.remove_from_cart', product_id=item.product.id) }}">
-                                {{ csrf_token() }}
                                 <button type="submit" class="btn-link">Remove</button>
                             </form>
                             <div class="cart-subtotal">
@@ -34,7 +41,10 @@
                 <aside class="cart-summary">
                     <h2>Summary</h2>
                     <p>Total: <strong>₹{{ '%.2f'|format(total) }}</strong></p>
-                    <a href="{{ url_for('cart.checkout') }}" class="btn-primary">Proceed to checkout</a>
+                    <a href="{{ url_for('cart.checkout') }}" class="btn-primary" style="display: flex; width: 100%; justify-content: center; margin-bottom: 0.75rem;">Proceed to checkout</a>
+                    <form method="post" action="{{ url_for('cart.clear_cart') }}">
+                        <button type="submit" class="btn-outline" style="width: 100%; display: flex; justify-content: center;">Clear Cart</button>
+                    </form>
                 </aside>
             </div>
         {% endif %}
