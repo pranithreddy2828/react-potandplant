@@ -43,11 +43,11 @@ const Admin = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const pRes = await axios.get('http://localhost:5000/api/products');
+      const pRes = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
       setProducts(pRes.data);
       
       if (activeTab === 'orders') {
-        const oRes = await axios.get('http://localhost:5000/api/orders');
+        const oRes = await axios.get(`${import.meta.env.VITE_API_URL}/orders`);
         setOrders(oRes.data);
       }
     } catch (err) {
@@ -81,7 +81,7 @@ const Admin = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/products', formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/products`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -103,7 +103,7 @@ const Admin = () => {
 
   const handleUpdateOrderStatus = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${id}`, { status });
+      await axios.put(`${import.meta.env.VITE_API_URL}/orders/${id}`, { status });
       toast.success('Status updated');
       fetchData();
     } catch (err) {
@@ -119,7 +119,7 @@ const Admin = () => {
   const confirmDelete = async () => {
     if (!productToDelete) return;
     try {
-      await axios.delete(`http://localhost:5000/api/products/${productToDelete._id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/products/${productToDelete._id}`);
       toast.success('Product removed');
       fetchData();
       setShowDeleteConfirm(false);
@@ -137,7 +137,7 @@ const Admin = () => {
   const confirmOrderDelete = async () => {
     if (!orderToDelete) return;
     try {
-      await axios.delete(`http://localhost:5000/api/orders/${orderToDelete._id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/orders/${orderToDelete._id}`);
       toast.success('Booking removed');
       fetchData();
       setShowOrderDeleteConfirm(false);
@@ -165,7 +165,7 @@ const Admin = () => {
   const confirmClear = async () => {
     if (clearCountdown > 0) return;
     try {
-      await axios.delete(`http://localhost:5000/api/orders`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/orders`);
       toast.success('All bookings cleared');
       setShowClearConfirm(false);
       fetchData();
