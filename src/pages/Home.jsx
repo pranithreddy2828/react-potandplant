@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import aboutGarden from '../assets/about-garden.png';
 import yogaDeck1 from '../assets/yoga-deck-1.png';
 import yogaDeck2 from '../assets/yoga-deck-2.png';
+import logoImg from '../assets/udgama/logo.png';
+import logoLightImg from '../assets/udgama/logo-light.png';
 
 const Home = () => {
   const [activeService, setActiveService] = useState(null);
@@ -278,6 +280,27 @@ const Home = () => {
                 <p>{service.description}</p>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Udgama Premium Promo Section - Clean & Minimal */}
+      <section className="udgama-promo-section">
+        <div className="container">
+          <div className="udgama-promo-card-clean">
+            <div className="udgama-promo-content">
+              <span className="promo-badge-clean">Udgama Studio</span>
+              <h2>Checkout our new premium studio</h2>
+              <p>Step into a world of curated luxury landscapes and bespoke greenery. Designed for those who seek the extraordinary.</p>
+              <Link to="/udgama" className="udgama-promo-btn-clean">
+                Explore <span className="arrow">→</span>
+              </Link>
+            </div>
+            <div className="udgama-promo-visual-clean">
+               <div className="promo-logo-container-clean">
+                  <img src={logoLightImg} alt="Udgama Logo" className="promo-side-logo-clean" />
+               </div>
+            </div>
           </div>
         </div>
       </section>

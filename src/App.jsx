@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
 import Admin from './pages/Admin';
+import UdgamaPage from './pages/UdgamaPage';
 import { CartProvider } from './context/CartContext';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -43,6 +44,7 @@ function App() {
               <Route path="register" element={<Register />} />
               <Route path="profile" element={<Profile />} />
               <Route path="admin" element={<Admin />} />
+              <Route path="udgama" element={<UdgamaPage />} />
             </Route>
           </Routes>
         </div>

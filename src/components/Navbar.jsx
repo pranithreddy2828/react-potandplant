@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { User, LogOut, Settings, LayoutDashboard } from 'lucide-react';
+import { User, LogOut, Settings, LayoutDashboard, Palette, BookOpen, Info, ArrowRight, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import MobileBottomNav from './MobileBottomNav';
 
 const Navbar = () => {
   const { cartCount } = useCart();
@@ -42,6 +44,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
+    { name: 'Udgama', path: '/udgama' },
     { name: 'Shop', path: '/shop' },
     { name: 'Studio', path: '/studio' },
     { name: 'Blogs', path: '/blogs' },
@@ -55,21 +58,21 @@ const Navbar = () => {
           <Link to="/" className="logo">
             Pot <span>&amp;</span> Plants
           </Link>
-          
+
           <nav className="nav-links">
             {navLinks.map((link) => (
-              <NavLink 
-                key={link.path} 
-                to={link.path} 
+              <NavLink
+                key={link.path}
+                to={link.path}
                 className={({ isActive }) => (isActive ? 'active' : '')}
               >
                 {link.name}
               </NavLink>
             ))}
           </nav>
-          
+
           <div className="nav-group">
-            <Link to="/cart" className="header-cart" aria-label="Cart">
+            <Link to="/cart" className="header-cart desktop-only" aria-label="Cart">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="9" cy="21" r="1"></circle>
                 <circle cx="20" cy="21" r="1"></circle>
@@ -79,9 +82,9 @@ const Navbar = () => {
             </Link>
 
             {user ? (
-              <div className="profile-container" ref={profileMenuRef}>
-                <button 
-                  className="profile-trigger" 
+              <div className="profile-container desktop-only" ref={profileMenuRef}>
+                <button
+                  className="profile-trigger"
                   onClick={() => setShowProfileMenu(!showProfileMenu)}
                   aria-label="Profile Menu"
                 >
@@ -119,9 +122,9 @@ const Navbar = () => {
               </div>
             )}
 
-            <button 
-              className={`nav-toggle ${isOpen ? 'is-open' : ''}`} 
-              type="button" 
+            <button
+              className={`nav-toggle ${isOpen ? 'is-open' : ''} mobile-only-hamburger`}
+              type="button"
               aria-label="Toggle navigation"
               onClick={toggleMenu}
             >
@@ -133,60 +136,60 @@ const Navbar = () => {
         </div>
       </header>
 
-      <div className={`mobile-nav-overlay ${isOpen ? 'is-open' : ''}`} onClick={() => setIsOpen(false)}>
-        <nav className="mobile-nav-content" onClick={(e) => e.stopPropagation()}>
-          <div className="mobile-nav-header">
-            <span className="mobile-nav-label">Navigation</span>
-            <button className="mobile-nav-close" onClick={() => setIsOpen(false)}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-          
-          <div className="mobile-nav-links">
-            {navLinks.map((link, index) => (
-              <NavLink 
-                key={link.path} 
-                to={link.path} 
-                style={{ '--index': index }}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                {link.name}
-              </NavLink>
-            ))}
-          </div>
+      <AnimatePresence>
+        {isOpen && (
+          <div className="mobile-popup-overlay" onClick={() => setIsOpen(false)}>
+            <motion.div
+              className="simple-mobile-popup"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="popup-header">
+                <h3 className="popup-title">Menu</h3>
+                <button className="popup-close-btn" onClick={() => setIsOpen(false)}>
+                  <X size={20} />
+                </button>
+              </div>
 
-          <div className="mobile-nav-footer">
-            {user ? (
-               <div className="mobile-nav-profile">
-                 <div className="mobile-user-info">
-                   <p className="mobile-user-name">{user.name}</p>
-                   <p className="mobile-user-phone">{user.phoneNumber}</p>
-                 </div>
-                 {isAdmin && (
-                   <Link to="/admin" className="btn-outline full-width">Admin Dashboard</Link>
-                 )}
-                 <button onClick={logout} className="btn-primary full-width">Logout</button>
-               </div>
-            ) : (
-              <div className="mobile-nav-auth">
-                <Link to="/login" className="btn-outline full-width">Login</Link>
-                <Link to="/register" className="btn-primary full-width">Sign up</Link>
+              <div className="popup-navigation">
+                <NavLink to="/studio" className="popup-nav-item">
+                  <Palette size={20} /> <span>Design Studio</span>
+                </NavLink>
+                <NavLink to="/blogs" className="popup-nav-item">
+                  <BookOpen size={20} /> <span>Nature Blogs</span>
+                </NavLink>
+                <NavLink to="/about" className="popup-nav-item">
+                  <Info size={20} /> <span>About Us</span>
+                </NavLink>
               </div>
-            )}
-            
-            <div className="mobile-nav-contact" style={{ marginTop: '2rem' }}>
-              <p>Greenery for your modern lifestyle.</p>
-              <div className="social-links-minimal">
-                <a href="https://www.instagram.com/pot_and_plants6?utm_source=qr&igsh=MWJta2V4dDk1ZjAweQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
-                <a href="https://www.youtube.com/@PotPlants-w9r" target="_blank" rel="noopener noreferrer">YouTube</a>
+
+              <div className="popup-divider" />
+
+              <div className="popup-footer">
+                {user ? (
+                  <div className="popup-user-info">
+                    <p className="user-name">{user.name}</p>
+                    <div className="user-actions">
+                      {isAdmin && <Link to="/admin">Admin</Link>}
+                      <Link to="/profile">Profile</Link>
+                      <button onClick={logout} className="logout-btn">Logout</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="popup-auth-actions">
+                    <Link to="/login" className="auth-btn">Login</Link>
+                    <Link to="/register" className="auth-btn primary">Sign Up</Link>
+                  </div>
+                )}
               </div>
-            </div>
+            </motion.div>
           </div>
-        </nav>
-      </div>
+        )}
+      </AnimatePresence>
+
+      <MobileBottomNav toggleMobileMenu={toggleMenu} />
     </>
   );
 };
