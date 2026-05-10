@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { User, LogOut, Settings, LayoutDashboard, Palette, BookOpen, Info, ArrowRight, X } from 'lucide-react';
+import { User, LogOut, Settings, LayoutDashboard, Palette, BookOpen, Info, ArrowRight, X, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MobileBottomNav from './MobileBottomNav';
 
@@ -105,6 +105,9 @@ const Navbar = () => {
                         <LayoutDashboard size={16} /> Admin Panel
                       </Link>
                     )}
+                    <Link to="/my-orders" className="dropdown-item">
+                      <ShoppingBag size={16} /> My Orders
+                    </Link>
                     <Link to="/profile" className="dropdown-item">
                       <Settings size={16} /> Edit Profile
                     </Link>
@@ -173,6 +176,7 @@ const Navbar = () => {
                     <p className="user-name">{user.name}</p>
                     <div className="user-actions">
                       {isAdmin && <Link to="/admin">Admin</Link>}
+                      <Link to="/my-orders">My Orders</Link>
                       <Link to="/profile">Profile</Link>
                       <button onClick={logout} className="logout-btn">Logout</button>
                     </div>

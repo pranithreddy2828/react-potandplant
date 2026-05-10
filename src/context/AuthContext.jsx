@@ -13,12 +13,29 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['x-auth-token'] = token;
-      // Ideally verify token here with a /me endpoint
-      // For now, assume it's valid if present
       const savedUser = JSON.parse(localStorage.getItem('user'));
       if (savedUser) setUser(savedUser);
     }
+
+    // Add interceptor to handle invalid token
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401 && 
+            (error.response?.data?.msg === 'Token is not valid' || 
+             error.response?.data?.msg === 'No token, authorization denied')) {
+          logout();
+          toast.error('Session expired. Please login again.');
+        }
+        return Promise.reject(error);
+      }
+    );
+
     setLoading(false);
+
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
   }, [token]);
 
   const login = async (phoneNumber, password) => {

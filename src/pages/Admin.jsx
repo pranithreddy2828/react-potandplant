@@ -380,57 +380,86 @@ const Admin = () => {
                     <div key={order._id} className="admin-card" style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
                       <button 
                         onClick={() => handleDeleteOrder(order)}
-                        style={{ position: 'absolute', top: '1rem', right: '1rem', background: '#fef2f2', border: 'none', color: '#ef4444', width: '24px', height: '24px', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        style={{ position: 'absolute', top: '1rem', right: '1rem', background: '#fef2f2', border: 'none', color: '#ef4444', width: '28px', height: '28px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}
                       >
                         <X size={14} />
                       </button>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.25rem', alignItems: 'center', paddingRight: '1.5rem' }}>
-                        <span style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem', background: '#f1f5f9', borderRadius: '99px', color: '#64748b', fontWeight: '600' }}>
+
+                      {/* Order ID + Date */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingRight: '2rem' }}>
+                        <span style={{ fontSize: '0.72rem', padding: '0.3rem 0.8rem', background: '#f1f5f9', borderRadius: '99px', color: '#475569', fontWeight: '700', letterSpacing: '0.05em' }}>
                           ORD-{order._id.substring(18).toUpperCase()}
                         </span>
-                        <div style={{ 
-                          display: 'flex', alignItems: 'center', gap: '0.5rem', 
-                          color: order.paymentStatus === 'paid' ? '#16a34a' : '#ef4444', 
-                          fontSize: '0.85rem', fontWeight: '700' 
-                        }}>
-                          {order.paymentStatus === 'paid' ? <Check size={16} /> : <AlertCircle size={16} />}
-                          {order.paymentStatus?.toUpperCase() || 'PENDING'}
-                        </div>
+                        <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                          {new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </span>
                       </div>
+
+                      {/* Customer + Status */}
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                        <h3 style={{ margin: '0' }}>{order.customerName}</h3>
+                        <div>
+                          <h3 style={{ margin: 0, fontSize: '1.05rem' }}>{order.customerName}</h3>
+                          {order.email && <p style={{ margin: '0.2rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>{order.email}</p>}
+                        </div>
                         <select 
                           className="premium-input" 
-                          style={{ width: '130px', padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
+                          style={{ width: '140px', padding: '0.45rem 0.8rem', fontSize: '0.8rem', borderRadius: '10px', flexShrink: 0 }}
                           value={order.status}
                           onChange={(e) => handleUpdateOrderStatus(order._id, e.target.value)}
                         >
-                          <option value="pending">Pending</option>
-                          <option value="processing">Processing</option>
-                          <option value="shipped">Shipped</option>
-                          <option value="delivered">Completed</option>
-                          <option value="cancelled">Cancelled</option>
+                          <option value="pending">🕐 Pending</option>
+                          <option value="processing">⚙️ Processing</option>
+                          <option value="shipped">🚚 Shipped</option>
+                          <option value="delivered">✅ Completed</option>
+                          <option value="cancelled">❌ Cancelled</option>
                         </select>
                       </div>
-                      <div style={{ display: 'grid', gap: '0.75rem', color: '#64748b', fontSize: '0.9rem', marginBottom: '1.25rem' }}>
-                        <p><strong>📞 Phone:</strong> {order.phoneNumber}</p>
-                        <p><strong>📍 Address:</strong> {order.address}</p>
+
+                      {/* Details block: phone, address, payment */}
+                      <div style={{ padding: '0.85rem 1rem', background: '#f8fafc', borderRadius: '12px', marginBottom: '1rem', display: 'grid', gap: '0.55rem' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.83rem', color: '#475569', alignItems: 'flex-start' }}>
+                          <span style={{ flexShrink: 0 }}>📞</span>
+                          <span><strong>Phone:</strong> {order.phoneNumber}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.83rem', color: '#475569', alignItems: 'flex-start' }}>
+                          <span style={{ flexShrink: 0 }}>📍</span>
+                          <span><strong>Address:</strong> {order.address}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', fontSize: '0.83rem', color: '#475569' }}>
+                          <span>💳</span>
+                          <span><strong>Payment:</strong></span>
+                          <span style={{ fontSize: '0.75rem', fontWeight: '700', padding: '0.2rem 0.65rem', borderRadius: '99px', background: '#dbeafe', color: '#1d4ed8' }}>
+                            {order.paymentMethod || 'UPI'}
+                          </span>
+                          <span style={{ fontSize: '0.75rem', fontWeight: '700', padding: '0.2rem 0.65rem', borderRadius: '99px', background: order.paymentStatus === 'paid' ? '#dcfce7' : '#fef9c3', color: order.paymentStatus === 'paid' ? '#166534' : '#854d0e' }}>
+                            {order.paymentStatus === 'paid' ? '✓ Paid' : '⏳ Pending'}
+                          </span>
+                        </div>
                       </div>
-                      
-                      <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '12px', marginBottom: '1.25rem' }}>
-                        <p style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Items Ordered</p>
-                        <div style={{ display: 'grid', gap: '0.5rem' }}>
+
+                      {/* Items */}
+                      <div style={{ marginBottom: '1rem' }}>
+                        <p style={{ fontSize: '0.7rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>Items Ordered</p>
+                        <div style={{ display: 'grid', gap: '0.45rem' }}>
                           {order.items.map((item, idx) => (
-                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                              <span style={{ color: '#1e293b' }}>{item.product?.name || 'Deleted Product'} x {item.quantity}</span>
-                              <span style={{ fontWeight: '600' }}>₹{item.priceAtPurchase * item.quantity}</span>
+                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.83rem', padding: '0.45rem 0.75rem', background: '#f1f5f9', borderRadius: '8px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                                {item.product?.image_filename && (
+                                  <div style={{ width: '30px', height: '30px', borderRadius: '6px', overflow: 'hidden', flexShrink: 0 }}>
+                                    <img src={item.product.image_filename?.startsWith('http') ? item.product.image_filename : `/images/${item.product.image_filename}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                  </div>
+                                )}
+                                <span style={{ color: '#1e293b', fontWeight: '500' }}>{item.product?.name || 'Deleted Product'} <span style={{ color: '#94a3b8', fontWeight: '400' }}>× {item.quantity}</span></span>
+                              </div>
+                              <span style={{ fontWeight: '700', color: 'var(--green)', flexShrink: 0 }}>₹{item.priceAtPurchase * item.quantity}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      <div style={{ marginTop: 'auto', paddingTop: '1.25rem', borderTop: '1.5px dashed #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                         <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Total Amount</span>
+                      {/* Total */}
+                      <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '2px dashed #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                         <span style={{ color: '#94a3b8', fontSize: '0.83rem', fontWeight: '600' }}>Total Amount</span>
                          <span style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--green)' }}>₹{order.totalAmount}</span>
                       </div>
                     </div>
