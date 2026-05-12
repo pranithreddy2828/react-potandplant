@@ -6,6 +6,16 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { User, Phone, Mail, MapPin, Building, Hash, CreditCard, Package, ChevronRight } from 'lucide-react';
 
+const Field = ({ label, icon: Icon, children }) => (
+  <div className="checkout-field">
+    <label className="checkout-label">
+      <Icon size={15} className="field-icon" />
+      {label}
+    </label>
+    {children}
+  </div>
+);
+
 const Checkout = () => {
   const { cartItems: cart, subtotal, clearCart } = useCart();
   const { user } = useAuth();
@@ -58,15 +68,6 @@ const Checkout = () => {
     setLoading(false);
   };
 
-  const Field = ({ label, icon: Icon, children }) => (
-    <div className="checkout-field">
-      <label className="checkout-label">
-        <Icon size={15} className="field-icon" />
-        {label}
-      </label>
-      {children}
-    </div>
-  );
 
   return (
     <section className="section checkout-section">
