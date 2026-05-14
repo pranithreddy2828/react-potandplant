@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
-import { LayoutGrid, ShoppingBag, Plus, Trash2, LogOut, X, Upload, Check, AlertCircle, TrendingUp, DollarSign } from 'lucide-react';
+import { LayoutGrid, ShoppingBag, Plus, Trash2, LogOut, X, Upload, Check, AlertCircle, TrendingUp, DollarSign, Edit } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell } from 'recharts';
 
 const Admin = () => {
@@ -19,6 +19,8 @@ const Admin = () => {
   const [clearCountdown, setClearCountdown] = useState(5);
   const [productToDelete, setProductToDelete] = useState(null);
   const [orderToDelete, setOrderToDelete] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [productToEdit, setProductToEdit] = useState(null);
   
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -81,13 +83,25 @@ const Admin = () => {
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/products`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      toast.success('Product added successfully!');
+      if (isEditing && productToEdit) {
+        await axios.put(`${import.meta.env.VITE_API_URL}/products/${productToEdit._id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        toast.success('Product updated successfully!');
+      } else {
+        await axios.post(`${import.meta.env.VITE_API_URL}/products`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        toast.success('Product added successfully!');
+      }
+      
       setShowAddForm(false);
+      setIsEditing(false);
+      setProductToEdit(null);
       fetchData();
       setNewProduct({ 
         name: '', price: '', description: '', care_instructions: '', 
@@ -97,8 +111,26 @@ const Admin = () => {
       setImageFile(null);
       setPreviewUrl(null);
     } catch (err) {
-      toast.error('Failed to add product');
+      toast.error(isEditing ? 'Failed to update product' : 'Failed to add product');
     }
+  };
+
+  const handleEditClick = (product) => {
+    setIsEditing(true);
+    setProductToEdit(product);
+    setNewProduct({
+      name: product.name,
+      price: product.price,
+      description: product.description || '',
+      care_instructions: product.care_instructions || '',
+      category_id: product.category_id || 1,
+      image_filename: product.image_filename || '',
+      stock: product.stock || 0,
+      is_featured: product.is_featured || false,
+      is_best_seller: product.is_best_seller || false
+    });
+    setPreviewUrl(product.image_filename?.startsWith('http') ? product.image_filename : `/images/${product.image_filename}`);
+    setShowAddForm(true);
   };
 
   const handleUpdateOrderStatus = async (id, status) => {
@@ -264,7 +296,7 @@ const Admin = () => {
           <div className="admin-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
               <h2>Current Stock</h2>
-              <button className="btn-primary" onClick={() => setShowAddForm(true)}>
+              <button className="btn-primary" onClick={() => { setIsEditing(false); setProductToEdit(null); setShowAddForm(true); setNewProduct({ name: '', price: '', description: '', care_instructions: '', category_id: 1, image_filename: '', stock: 100, is_featured: false, is_best_seller: false }); setPreviewUrl(null); setImageFile(null); }}>
                 <Plus size={18} /> New Product
               </button>
             </div>
@@ -313,9 +345,14 @@ const Admin = () => {
                       </td>
                       <td data-label="Price"><span style={{ fontWeight: '700', color: 'var(--green)' }}>₹{product.price}</span></td>
                       <td style={{ textAlign: 'right' }}>
-                        <button onClick={() => handleDeleteProduct(product)} className="btn-danger" style={{ padding: '0.5rem' }}>
-                          <Trash2 size={16} />
-                        </button>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                          <button onClick={() => handleEditClick(product)} className="btn-outline" style={{ padding: '0.5rem', background: '#f8fafc' }}>
+                            <Edit size={16} />
+                          </button>
+                          <button onClick={() => handleDeleteProduct(product)} className="btn-danger" style={{ padding: '0.5rem' }}>
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -580,7 +617,7 @@ const Admin = () => {
           <div className="modal-overlay" onClick={() => setShowAddForm(false)}>
             <div className="admin-modal-content" onClick={e => e.stopPropagation()}>
               <div className="modal-header">
-                <h2>Add Premium Product</h2>
+                <h2>{isEditing ? 'Edit Product Details' : 'Add Premium Product'}</h2>
                 <button className="modal-close-btn" onClick={() => setShowAddForm(false)}>
                   <X size={20} />
                 </button>
@@ -614,7 +651,7 @@ const Admin = () => {
                           />
                         </div>
                         <div className="premium-input-group">
-                          <label>Initial Stock</label>
+                          <label>{isEditing ? 'Update Stock' : 'Initial Stock'}</label>
                           <input 
                             type="number" 
                             className="premium-input" 
@@ -691,7 +728,7 @@ const Admin = () => {
               <div className="modal-footer">
                 <button type="button" className="btn-outline" onClick={() => setShowAddForm(false)}>Discard</button>
                 <button type="submit" form="add-product-form" className="btn-primary" style={{ padding: '0.9rem 2.5rem' }}>
-                  Create Product
+                  {isEditing ? 'Update Product' : 'Create Product'}
                 </button>
               </div>
             </div>
