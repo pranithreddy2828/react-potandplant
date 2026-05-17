@@ -33,3 +33,10 @@ pnpm-debug.log*
 
 # Vercel
 .vercel
+
+# Unwanted files and scripts
+scratch/
+temp/
+tmp/
+public/uploads/
+uploads/
