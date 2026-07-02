@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import WhatsAppButton from './WhatsAppButton';
 
 import logoImg from '../assets/udgama/logo.png';
 
@@ -78,6 +79,7 @@ const Layout = () => {
           <Outlet />
         </main>
         <Footer />
+        <WhatsAppButton />
       </motion.div>
     </>
   );
