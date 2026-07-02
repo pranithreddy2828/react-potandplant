@@ -1,7 +1,7 @@
 import React from 'react';
 
 const WHATSAPP_NUMBER = "917095722973"; // Contact number (with country code, no "+" or spaces)
-const DEFAULT_MESSAGE = "Hello! I am interested in Pots & Plants and would like to chat.";
+const DEFAULT_MESSAGE = "Hi! I'm looking for landscaping services and would like to know more about the services you offer.";
 
 const WhatsAppButton = () => {
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(DEFAULT_MESSAGE)}`;
